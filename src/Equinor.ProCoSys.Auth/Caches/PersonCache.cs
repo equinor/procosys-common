@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Equinor.ProCoSys.Auth.Person;
 using Equinor.ProCoSys.Common.Caches;
@@ -37,6 +39,17 @@ namespace Equinor.ProCoSys.Auth.Caches
                 CacheDuration.Minutes,
                 _options.CurrentValue.PersonCacheMinutes);
 
+        public async Task<List<ProCoSysPerson>> GetAllPersonsAsync(string plant, CancellationToken cancellationToken)
+            => await _cacheManager.GetOrCreate(
+                PersonsCacheKey(plant),
+                async () =>
+                {
+                    var persons = await _personApiService.GetAllPersonsAsync(plant, CancellationToken.None);
+                    return persons;
+                },
+                CacheDuration.Minutes,
+                _options.CurrentValue.PersonCacheMinutes);
+
         public async Task<bool> ExistsAsync(Guid userOid)
         {
             var pcsPerson = await GetAsync(userOid);
@@ -45,5 +58,8 @@ namespace Equinor.ProCoSys.Auth.Caches
 
         private string PersonsCacheKey(Guid userOid)
             => $"PERSONS_{userOid.ToString().ToUpper()}";
+
+        private string PersonsCacheKey(string plant)
+            => $"PERSONS_{plant.ToUpper()}";
     }
 }

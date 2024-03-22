@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Equinor.ProCoSys.Auth.Client;
 using Equinor.ProCoSys.Auth.Person;
@@ -42,6 +44,44 @@ namespace Equinor.ProCoSys.Auth.Tests.Person
             Assert.IsNotNull(result);
             Assert.AreEqual(person.FirstName, result.FirstName);
             Assert.AreEqual(person.LastName, result.LastName);
+        }
+
+        [TestMethod]
+        public async Task TryGetAllPersonsAsync_ShouldReturnPersons()
+        {
+            var plant = "APlant";
+            var url = _mainApiOptionsMock.CurrentValue.BaseAddress 
+                      + $"/Person/AllPersons?plantId={plant}&api-version={_mainApiOptionsMock.CurrentValue.ApiVersion}";
+
+            // Arrange
+            _mainApiClientMock.TryQueryAndDeserializeAsync<List<ProCoSysPerson>>(url)
+                .Returns([
+                    new()
+                    {
+                        AzureOid = "asdf-fghj-qwer-tyui",
+                        Email = "test@email.com",
+                        FirstName = "Ola",
+                        LastName = "Hansen",
+                        UserName = "oha@mail.com",
+                        Id = 5
+                    },
+                    new()
+                    {
+                        AzureOid = "1234-4567-6789-5432",
+                        Email = "test2@email.com",
+                        FirstName = "Hans",
+                        LastName = "Olsen",
+                        UserName = "hans@mail.com",
+                        Id = 5
+                    }
+                ]);
+
+            // Act
+            var result = await _dut.GetAllPersonsAsync(plant, CancellationToken.None);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.Count == 2);
         }
     }
 }
