@@ -32,7 +32,7 @@ public sealed class DistributedCacheManager(
         if (item != null && !item.Equals(default(T)))
         {
             sw.Stop();
-            logger.LogInformation("Fetching from cache ({Elapsed}ms) '{Key}', Elapsed ", key, sw.ElapsedMilliseconds);
+            logger.LogInformation("Fetching {Key} from cache ({Elapsed}ms)", key, sw.ElapsedMilliseconds);
             return item;
         }
 
