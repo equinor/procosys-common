@@ -32,7 +32,7 @@ public sealed class DistributedCacheManager(
         if (item != null && !item.Equals(default(T)))
         {
             sw.Stop();
-            logger.LogInformation("Fetching from cache ({Elapsed}ms) '{Key}', Elapsed ", key, sw.ElapsedMilliseconds);
+            logger.LogInformation("Fetching from cache ({Elapsed}ms) '{Key}', Elapsed ", sw.ElapsedMilliseconds, key);
             return item;
         }
 
@@ -40,7 +40,7 @@ public sealed class DistributedCacheManager(
         await AddToCache(item, key, duration, expiration, cancellationToken);
 
         sw.Stop();
-        logger.LogInformation("Added {Key} to cache ({Elapsed}ms)", key, sw.ElapsedMilliseconds);
+        logger.LogInformation("Added {Key} to cache ({Elapsed}ms)", sw.ElapsedMilliseconds, key);
         return item;
     }
 
