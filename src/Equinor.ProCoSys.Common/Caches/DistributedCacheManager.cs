@@ -40,7 +40,7 @@ public sealed class DistributedCacheManager(
         await AddToCache(item, key, duration, expiration, cancellationToken);
 
         sw.Stop();
-        logger.LogInformation("Added {Key} to cache ({Elapsed}ms)", sw.ElapsedMilliseconds, key);
+        logger.LogInformation("Added {Key} to cache ({Elapsed}ms)", key, sw.ElapsedMilliseconds);
         return item;
     }
 
