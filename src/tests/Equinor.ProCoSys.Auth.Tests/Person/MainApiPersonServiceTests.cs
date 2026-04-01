@@ -50,7 +50,7 @@ namespace Equinor.ProCoSys.Auth.Tests.Person
         public async Task TryGetAllPersonsAsync_ShouldReturnPersons()
         {
             var plant = "APlant";
-            var url = _mainApiOptionsMock.CurrentValue.BaseAddress 
+            var url = _mainApiOptionsMock.CurrentValue.BaseAddress
                       + $"/Person/AllPersons?plantId={plant}&api-version={_mainApiOptionsMock.CurrentValue.ApiVersion}";
             ProCoSysPerson person1 = new()
             {

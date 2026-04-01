@@ -2,6 +2,6 @@
 
 namespace Equinor.ProCoSys.Common;
 
-public interface IDomainEvent: INotification
+public interface IDomainEvent : INotification
 {
 }

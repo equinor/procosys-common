@@ -1,6 +1,6 @@
-﻿using Equinor.ProCoSys.Common.Misc;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using Equinor.ProCoSys.Common.Misc;
 
 namespace Equinor.ProCoSys.Common.TemplateTransforming;
 

@@ -22,7 +22,7 @@ namespace Equinor.ProCoSys.BlobStorage.Tests
                 AccountName = accountName,
             };
             optionsMock.CurrentValue.Returns(options);
-            
+
             // Act
             var dut = new AzureBlobService(optionsMock, tokenMock);
 

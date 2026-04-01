@@ -1,5 +1,5 @@
-﻿using Equinor.ProCoSys.Common.Time;
-using System;
+﻿using System;
+using Equinor.ProCoSys.Common.Time;
 
 namespace Equinor.ProCoSys.Common.Tests
 {

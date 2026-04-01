@@ -1,9 +1,9 @@
-﻿using Equinor.ProCoSys.Auth.Client;
-using Microsoft.Extensions.Options;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Equinor.ProCoSys.Auth.Client;
+using Microsoft.Extensions.Options;
 
 namespace Equinor.ProCoSys.Auth.Person
 {
@@ -19,8 +19,8 @@ namespace Equinor.ProCoSys.Auth.Person
         private readonly string _apiVersion = options.CurrentValue.ApiVersion;
 
         public async Task<ProCoSysPerson> TryGetPersonByOidAsync(
-            Guid azureOid, 
-            bool includeVoidedPerson, 
+            Guid azureOid,
+            bool includeVoidedPerson,
             CancellationToken cancellationToken)
         {
             var url = $"{_baseAddress}Person" +

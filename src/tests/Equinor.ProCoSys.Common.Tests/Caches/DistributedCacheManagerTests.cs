@@ -1,15 +1,15 @@
-﻿using Equinor.ProCoSys.Common.Caches;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Equinor.ProCoSys.Common.Caches;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
-using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Equinor.ProCoSys.Common.Tests.Caches
 {
@@ -51,7 +51,7 @@ namespace Equinor.ProCoSys.Common.Tests.Caches
         [TestMethod]
         public async Task GetOrCreateAsync_ShouldThrowException_WhenActionThrowException()
             // Act and Assert
-            => await Assert.ThrowsExceptionAsync<Exception>(() 
+            => await Assert.ThrowsExceptionAsync<Exception>(()
                 => _dut.GetOrCreateAsync("KeyA", token => ThrowTestableException("V1", "V2", token), CacheDuration.Minutes, 2, CancellationToken.None));
 
         [TestMethod]

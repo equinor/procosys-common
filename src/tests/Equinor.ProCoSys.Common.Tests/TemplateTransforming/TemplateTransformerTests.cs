@@ -1,6 +1,6 @@
-﻿using Equinor.ProCoSys.Common.TemplateTransforming;
+﻿using System.Dynamic;
+using Equinor.ProCoSys.Common.TemplateTransforming;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Dynamic;
 
 namespace Equinor.ProCoSys.Common.Tests.TemplateTransforming;
 

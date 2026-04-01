@@ -115,14 +115,14 @@ namespace Equinor.ProCoSys.Auth.Caches
         public async Task ClearAllAsync(string plantId, Guid userOid, CancellationToken cancellationToken)
         {
             var t1 = _cacheManager.RemoveAsync(PlantsCacheKey(userOid), cancellationToken);
-            var t2 =_cacheManager.RemoveAsync(ProjectsCacheKey(plantId, userOid), cancellationToken);
-            var t3 =_cacheManager.RemoveAsync(PermissionsCacheKey(plantId, userOid), cancellationToken);
-            var t4 =_cacheManager.RemoveAsync(RestrictionRolesCacheKey(plantId, userOid), cancellationToken);
-            var t5 =_cacheManager.RemoveAsync(UserPlantPermissionDataKey(userOid, plantId), cancellationToken);
+            var t2 = _cacheManager.RemoveAsync(ProjectsCacheKey(plantId, userOid), cancellationToken);
+            var t3 = _cacheManager.RemoveAsync(PermissionsCacheKey(plantId, userOid), cancellationToken);
+            var t4 = _cacheManager.RemoveAsync(RestrictionRolesCacheKey(plantId, userOid), cancellationToken);
+            var t5 = _cacheManager.RemoveAsync(UserPlantPermissionDataKey(userOid, plantId), cancellationToken);
 
             await Task.WhenAll([t1, t2, t3, t4, t5]);
         }
-        
+
         public async Task<UserPlantPermissionData> GetUserPlantPermissionDataAsync(Guid userOid, string plantId,
             CancellationToken cancellationToken)
             => await _cacheManager.GetOrCreateAsync(

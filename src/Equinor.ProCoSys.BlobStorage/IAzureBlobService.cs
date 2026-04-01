@@ -1,9 +1,9 @@
-﻿using Azure.Storage.Blobs.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using Azure.Storage.Blobs.Models;
 
 namespace Equinor.ProCoSys.BlobStorage
 {

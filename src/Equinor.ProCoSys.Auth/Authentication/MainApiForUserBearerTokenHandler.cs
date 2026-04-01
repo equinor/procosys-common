@@ -1,11 +1,11 @@
-﻿using Microsoft.Extensions.Options;
-using Microsoft.Identity.Web;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
+using Microsoft.Identity.Web;
 
 namespace Equinor.ProCoSys.Auth.Authentication;
 
@@ -37,9 +37,9 @@ public class MainApiForUserBearerTokenHandler(
     {
         // if (!_tokenCache.ContainsKey(scope))
         // {
-            return await tokenAcquisition.GetAccessTokenForUserAsync(
-                new[] { scope },
-                tokenAcquisitionOptions: new TokenAcquisitionOptions { CancellationToken = cancellationToken });
+        return await tokenAcquisition.GetAccessTokenForUserAsync(
+            new[] { scope },
+            tokenAcquisitionOptions: new TokenAcquisitionOptions { CancellationToken = cancellationToken });
         //     _tokenCache.TryAdd(scope, token);
         // }
         //

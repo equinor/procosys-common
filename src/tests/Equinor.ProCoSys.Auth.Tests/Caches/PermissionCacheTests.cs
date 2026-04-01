@@ -1,4 +1,4 @@
-﻿﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -25,19 +25,19 @@ namespace Equinor.ProCoSys.Auth.Tests.Caches
         private readonly Guid _currentUserOid = new("{3BFB54C7-91E2-422E-833F-951AD07FE37F}");
         private IPermissionApiService _permissionApiServiceMock;
         private ICurrentUserProvider _currentUserProviderMock;
-        private readonly string Plant1IdWithAccess = "P1";
-        private readonly string Plant2IdWithAccess = "P2";
-        private readonly string PlantIdWithoutAccess = "P3";
-        private readonly string Plant1TitleWithAccess = "P1 Title";
-        private readonly string Plant2TitleWithAccess = "P2 Title";
-        private readonly string PlantTitleWithoutAccess = "P3 Title";
-        private readonly string Permission1 = "A";
-        private readonly string Permission2 = "B";
-        private readonly string Project1WithAccess = "P1";
-        private readonly string Project2WithAccess = "P2";
-        private readonly string ProjectWithoutAccess = "P3";
-        private readonly string Restriction1 = "R1";
-        private readonly string Restriction2 = "R2";
+        private readonly string _plant1IdWithAccess = "P1";
+        private readonly string _plant2IdWithAccess = "P2";
+        private readonly string _plantIdWithoutAccess = "P3";
+        private readonly string _plant1TitleWithAccess = "P1 Title";
+        private readonly string _plant2TitleWithAccess = "P2 Title";
+        private readonly string _plantTitleWithoutAccess = "P3 Title";
+        private readonly string _permission1 = "A";
+        private readonly string _permission2 = "B";
+        private readonly string _project1WithAccess = "P1";
+        private readonly string _project2WithAccess = "P2";
+        private readonly string _projectWithoutAccess = "P3";
+        private readonly string _restriction1 = "R1";
+        private readonly string _restriction2 = "R2";
 
         [TestInitialize]
         public void Setup()
@@ -50,34 +50,34 @@ namespace Equinor.ProCoSys.Auth.Tests.Caches
                 [
                     new()
                     {
-                        Id = Plant1IdWithAccess,
-                        Title = Plant1TitleWithAccess,
+                        Id = _plant1IdWithAccess,
+                        Title = _plant1TitleWithAccess,
                         HasAccess = true
                     },
 
                     new()
                     {
-                        Id = Plant2IdWithAccess,
-                        Title = Plant2TitleWithAccess,
+                        Id = _plant2IdWithAccess,
+                        Title = _plant2TitleWithAccess,
                         HasAccess = true
                     },
 
                     new()
                     {
-                        Id = PlantIdWithoutAccess,
-                        Title = PlantTitleWithoutAccess
+                        Id = _plantIdWithoutAccess,
+                        Title = _plantTitleWithoutAccess
                     }
                 ]);
-            _permissionApiServiceMock.GetAllOpenProjectsForCurrentUserAsync(Plant1IdWithAccess, CancellationToken.None)
+            _permissionApiServiceMock.GetAllOpenProjectsForCurrentUserAsync(_plant1IdWithAccess, CancellationToken.None)
                 .Returns([
-                    new() { Name = Project1WithAccess, HasAccess = true },
-                    new() { Name = Project2WithAccess, HasAccess = true },
-                    new() { Name = ProjectWithoutAccess }
+                    new() { Name = _project1WithAccess, HasAccess = true },
+                    new() { Name = _project2WithAccess, HasAccess = true },
+                    new() { Name = _projectWithoutAccess }
                 ]);
-            _permissionApiServiceMock.GetPermissionsForCurrentUserAsync(Plant1IdWithAccess, CancellationToken.None)
-                .Returns([Permission1, Permission2]);
-            _permissionApiServiceMock.GetRestrictionRolesForCurrentUserAsync(Plant1IdWithAccess, CancellationToken.None)
-                .Returns([Restriction1, Restriction2]);
+            _permissionApiServiceMock.GetPermissionsForCurrentUserAsync(_plant1IdWithAccess, CancellationToken.None)
+                .Returns([_permission1, _permission2]);
+            _permissionApiServiceMock.GetRestrictionRolesForCurrentUserAsync(_plant1IdWithAccess, CancellationToken.None)
+                .Returns([_restriction1, _restriction2]);
 
             var optionsMock = Substitute.For<IOptionsMonitor<CacheOptions>>();
             optionsMock.CurrentValue.Returns(new CacheOptions());
@@ -122,7 +122,7 @@ namespace Equinor.ProCoSys.Auth.Tests.Caches
         public async Task HasCurrentUserAccessToPlantAsync_ShouldReturnTrue_WhenKnownPlant()
         {
             // Act
-            var result = await _dut.HasCurrentUserAccessToPlantAsync(Plant2IdWithAccess, CancellationToken.None);
+            var result = await _dut.HasCurrentUserAccessToPlantAsync(_plant2IdWithAccess, CancellationToken.None);
 
             // Assert
             Assert.IsTrue(result);
@@ -142,7 +142,7 @@ namespace Equinor.ProCoSys.Auth.Tests.Caches
         public async Task HasCurrentUserAccessToPlantAsync_ShouldReturnPlantIdsFromPlantApiServiceFirstTime()
         {
             // Act
-            await _dut.HasCurrentUserAccessToPlantAsync(Plant2IdWithAccess, CancellationToken.None);
+            await _dut.HasCurrentUserAccessToPlantAsync(_plant2IdWithAccess, CancellationToken.None);
 
             // Assert
             await _permissionApiServiceMock.Received(1).GetAllPlantsForUserAsync(_currentUserOid, CancellationToken.None);
@@ -153,7 +153,7 @@ namespace Equinor.ProCoSys.Auth.Tests.Caches
         {
             await _dut.HasCurrentUserAccessToPlantAsync("XYZ", CancellationToken.None);
             // Act
-            await _dut.HasCurrentUserAccessToPlantAsync(Plant2IdWithAccess, CancellationToken.None);
+            await _dut.HasCurrentUserAccessToPlantAsync(_plant2IdWithAccess, CancellationToken.None);
 
             // Assert
             await _permissionApiServiceMock.Received(1).GetAllPlantsForUserAsync(_currentUserOid, CancellationToken.None);
@@ -163,7 +163,7 @@ namespace Equinor.ProCoSys.Auth.Tests.Caches
         public async Task HasUserAccessToPlantAsync_ShouldReturnTrue_WhenKnownPlant()
         {
             // Act
-            var result = await _dut.HasUserAccessToPlantAsync(Plant2IdWithAccess, _currentUserOid, CancellationToken.None);
+            var result = await _dut.HasUserAccessToPlantAsync(_plant2IdWithAccess, _currentUserOid, CancellationToken.None);
 
             // Assert
             Assert.IsTrue(result);
@@ -183,7 +183,7 @@ namespace Equinor.ProCoSys.Auth.Tests.Caches
         public async Task HasUserAccessToPlantAsync_ShouldReturnPlantIdsFromPlantApiServiceFirstTime()
         {
             // Act
-            await _dut.HasUserAccessToPlantAsync(Plant2IdWithAccess, _currentUserOid, CancellationToken.None);
+            await _dut.HasUserAccessToPlantAsync(_plant2IdWithAccess, _currentUserOid, CancellationToken.None);
 
             // Assert
             await _permissionApiServiceMock.Received(1).GetAllPlantsForUserAsync(_currentUserOid, CancellationToken.None);
@@ -194,7 +194,7 @@ namespace Equinor.ProCoSys.Auth.Tests.Caches
         {
             await _dut.HasUserAccessToPlantAsync("ABC", _currentUserOid, CancellationToken.None);
             // Act
-            await _dut.HasUserAccessToPlantAsync(Plant2IdWithAccess, _currentUserOid, CancellationToken.None);
+            await _dut.HasUserAccessToPlantAsync(_plant2IdWithAccess, _currentUserOid, CancellationToken.None);
 
             // Assert
             await _permissionApiServiceMock.Received(1).GetAllPlantsForUserAsync(_currentUserOid, CancellationToken.None);
@@ -204,7 +204,7 @@ namespace Equinor.ProCoSys.Auth.Tests.Caches
         public async Task IsAValidPlantForCurrentUserAsync_ShouldReturnTrue_WhenKnownPlantWithAccess()
         {
             // Act
-            var result = await _dut.IsAValidPlantForCurrentUserAsync(Plant2IdWithAccess, CancellationToken.None);
+            var result = await _dut.IsAValidPlantForCurrentUserAsync(_plant2IdWithAccess, CancellationToken.None);
 
             // Assert
             Assert.IsTrue(result);
@@ -214,7 +214,7 @@ namespace Equinor.ProCoSys.Auth.Tests.Caches
         public async Task IsAValidPlantForCurrentUserAsync_ShouldReturnTrue_WhenKnownPlantWithoutAccess()
         {
             // Act
-            var result = await _dut.IsAValidPlantForCurrentUserAsync(PlantIdWithoutAccess, CancellationToken.None);
+            var result = await _dut.IsAValidPlantForCurrentUserAsync(_plantIdWithoutAccess, CancellationToken.None);
 
             // Assert
             Assert.IsTrue(result);
@@ -234,20 +234,20 @@ namespace Equinor.ProCoSys.Auth.Tests.Caches
         public async Task GetPlantTitleForCurrentUserAsync_ShouldReturnPlant_WhenKnownPlantWithAccess()
         {
             // Act
-            var result = await _dut.GetPlantTitleForCurrentUserAsync(Plant2IdWithAccess, CancellationToken.None);
+            var result = await _dut.GetPlantTitleForCurrentUserAsync(_plant2IdWithAccess, CancellationToken.None);
 
             // Assert
-            Assert.AreEqual(Plant2TitleWithAccess, result);
+            Assert.AreEqual(_plant2TitleWithAccess, result);
         }
 
         [TestMethod]
         public async Task GetPlantTitleForCurrentUserAsync_ShouldReturnPlant_WhenKnownPlantWithoutAccess()
         {
             // Act
-            var result = await _dut.GetPlantTitleForCurrentUserAsync(PlantIdWithoutAccess, CancellationToken.None);
+            var result = await _dut.GetPlantTitleForCurrentUserAsync(_plantIdWithoutAccess, CancellationToken.None);
 
             // Assert
-            Assert.AreEqual(PlantTitleWithoutAccess, result);
+            Assert.AreEqual(_plantTitleWithoutAccess, result);
         }
 
         [TestMethod]
@@ -264,15 +264,15 @@ namespace Equinor.ProCoSys.Auth.Tests.Caches
         public async Task Clear_ShouldForceGettingPlantsFromApiServiceAgain()
         {
             // Arrange
-            var result = await _dut.HasUserAccessToPlantAsync(Plant2IdWithAccess, _currentUserOid, CancellationToken.None);
+            var result = await _dut.HasUserAccessToPlantAsync(_plant2IdWithAccess, _currentUserOid, CancellationToken.None);
             Assert.IsTrue(result);
             await _permissionApiServiceMock.Received(1).GetAllPlantsForUserAsync(_currentUserOid, CancellationToken.None);
 
             // Act
-            await _dut.ClearAllAsync(Plant2IdWithAccess, _currentUserOid, CancellationToken.None);
+            await _dut.ClearAllAsync(_plant2IdWithAccess, _currentUserOid, CancellationToken.None);
 
             // Assert
-            result = await _dut.HasUserAccessToPlantAsync(Plant2IdWithAccess, _currentUserOid, CancellationToken.None);
+            result = await _dut.HasUserAccessToPlantAsync(_plant2IdWithAccess, _currentUserOid, CancellationToken.None);
             Assert.IsTrue(result);
             await _permissionApiServiceMock.Received(2).GetAllPlantsForUserAsync(_currentUserOid, CancellationToken.None);
         }
@@ -281,85 +281,85 @@ namespace Equinor.ProCoSys.Auth.Tests.Caches
         public async Task GetPermissionsForUserAsync_ShouldReturnPermissionsFromPermissionApiServiceFirstTime()
         {
             // Act
-            var result = await _dut.GetPermissionsForUserAsync(Plant1IdWithAccess, _currentUserOid, CancellationToken.None);
+            var result = await _dut.GetPermissionsForUserAsync(_plant1IdWithAccess, _currentUserOid, CancellationToken.None);
 
             // Assert
             AssertPermissions(result);
-            await _permissionApiServiceMock.Received(1).GetPermissionsForCurrentUserAsync(Plant1IdWithAccess, CancellationToken.None);
+            await _permissionApiServiceMock.Received(1).GetPermissionsForCurrentUserAsync(_plant1IdWithAccess, CancellationToken.None);
         }
 
         [TestMethod]
         public async Task GetPermissionsForUserAsync_ShouldReturnPermissionsFromCacheSecondTime()
         {
-            await _dut.GetPermissionsForUserAsync(Plant1IdWithAccess, _currentUserOid, CancellationToken.None);
+            await _dut.GetPermissionsForUserAsync(_plant1IdWithAccess, _currentUserOid, CancellationToken.None);
             // Act
-            var result = await _dut.GetPermissionsForUserAsync(Plant1IdWithAccess, _currentUserOid, CancellationToken.None);
+            var result = await _dut.GetPermissionsForUserAsync(_plant1IdWithAccess, _currentUserOid, CancellationToken.None);
 
             // Assert
             AssertPermissions(result);
             // since GetPermissionsForUserAsync has been called twice, but GetPermissionsAsync has been called once, the second Get uses cache
-            await _permissionApiServiceMock.Received(1).GetPermissionsForCurrentUserAsync(Plant1IdWithAccess, CancellationToken.None);
+            await _permissionApiServiceMock.Received(1).GetPermissionsForCurrentUserAsync(_plant1IdWithAccess, CancellationToken.None);
         }
 
         [TestMethod]
         public async Task GetProjectNamesForUserAsync_ShouldReturnProjectsFromPermissionApiServiceFirstTime()
         {
             // Act
-            var result = await _dut.GetProjectNamesForUserAsync(Plant1IdWithAccess, _currentUserOid, CancellationToken.None);
+            var result = await _dut.GetProjectNamesForUserAsync(_plant1IdWithAccess, _currentUserOid, CancellationToken.None);
 
             // Assert
             AssertProjects(result);
-            await _permissionApiServiceMock.GetAllOpenProjectsForCurrentUserAsync(Plant1IdWithAccess, CancellationToken.None);
+            await _permissionApiServiceMock.GetAllOpenProjectsForCurrentUserAsync(_plant1IdWithAccess, CancellationToken.None);
         }
 
         [TestMethod]
         public async Task GetProjectNamesForUserAsync_ShouldReturnProjectsFromCacheSecondTime()
         {
-            await _dut.GetProjectNamesForUserAsync(Plant1IdWithAccess, _currentUserOid, CancellationToken.None);
+            await _dut.GetProjectNamesForUserAsync(_plant1IdWithAccess, _currentUserOid, CancellationToken.None);
             // Act
-            var result = await _dut.GetProjectNamesForUserAsync(Plant1IdWithAccess, _currentUserOid, CancellationToken.None);
+            var result = await _dut.GetProjectNamesForUserAsync(_plant1IdWithAccess, _currentUserOid, CancellationToken.None);
 
             // Assert
             AssertProjects(result);
             // since GetProjectNamesForUserAsync has been called twice, but GetProjectsAsync has been called once, the second Get uses cache
-            await _permissionApiServiceMock.Received(1).GetAllOpenProjectsForCurrentUserAsync(Plant1IdWithAccess, CancellationToken.None);
+            await _permissionApiServiceMock.Received(1).GetAllOpenProjectsForCurrentUserAsync(_plant1IdWithAccess, CancellationToken.None);
         }
 
         [TestMethod]
         public async Task GetRestrictionRolesForUserAsync_ShouldReturnPermissionsFromPermissionApiServiceFirstTime()
         {
             // Act
-            var result = await _dut.GetRestrictionRolesForUserAsync(Plant1IdWithAccess, _currentUserOid, CancellationToken.None);
+            var result = await _dut.GetRestrictionRolesForUserAsync(_plant1IdWithAccess, _currentUserOid, CancellationToken.None);
 
             // Assert
             AssertRestrictions(result);
-            await _permissionApiServiceMock.Received(1).GetRestrictionRolesForCurrentUserAsync(Plant1IdWithAccess, CancellationToken.None);
+            await _permissionApiServiceMock.Received(1).GetRestrictionRolesForCurrentUserAsync(_plant1IdWithAccess, CancellationToken.None);
         }
 
         [TestMethod]
         public async Task GetRestrictionRolesForUserAsync_ShouldReturnPermissionsFromCacheSecondTime()
         {
-            await _dut.GetRestrictionRolesForUserAsync(Plant1IdWithAccess, _currentUserOid, CancellationToken.None);
+            await _dut.GetRestrictionRolesForUserAsync(_plant1IdWithAccess, _currentUserOid, CancellationToken.None);
             // Act
-            var result = await _dut.GetRestrictionRolesForUserAsync(Plant1IdWithAccess, _currentUserOid, CancellationToken.None);
+            var result = await _dut.GetRestrictionRolesForUserAsync(_plant1IdWithAccess, _currentUserOid, CancellationToken.None);
 
             // Assert
             AssertRestrictions(result);
             // since GetRestrictionRolesForUserAsync has been called twice, but GetRestrictionRolesAsync has been called once, the second Get uses cache
-            await _permissionApiServiceMock.Received(1).GetRestrictionRolesForCurrentUserAsync(Plant1IdWithAccess, CancellationToken.None);
+            await _permissionApiServiceMock.Received(1).GetRestrictionRolesForCurrentUserAsync(_plant1IdWithAccess, CancellationToken.None);
         }
 
         [TestMethod]
         public async Task GetPermissionsForUserAsync_ShouldThrowExceptionWhenOidIsEmpty()
-            => await Assert.ThrowsExceptionAsync<Exception>(() => _dut.GetPermissionsForUserAsync(Plant1IdWithAccess, Guid.Empty, CancellationToken.None));
+            => await Assert.ThrowsExceptionAsync<Exception>(() => _dut.GetPermissionsForUserAsync(_plant1IdWithAccess, Guid.Empty, CancellationToken.None));
 
         [TestMethod]
         public async Task GetProjectNamesForUserAsync_ShouldThrowExceptionWhenOidIsEmpty()
-            => await Assert.ThrowsExceptionAsync<Exception>(() => _dut.GetProjectNamesForUserAsync(Plant1IdWithAccess, Guid.Empty, CancellationToken.None));
+            => await Assert.ThrowsExceptionAsync<Exception>(() => _dut.GetProjectNamesForUserAsync(_plant1IdWithAccess, Guid.Empty, CancellationToken.None));
 
         [TestMethod]
         public async Task GetRestrictionRolesForUserAsync_ShouldThrowExceptionWhenOidIsEmpty()
-            => await Assert.ThrowsExceptionAsync<Exception>(() => _dut.GetRestrictionRolesForUserAsync(Plant1IdWithAccess, Guid.Empty, CancellationToken.None));
+            => await Assert.ThrowsExceptionAsync<Exception>(() => _dut.GetRestrictionRolesForUserAsync(_plant1IdWithAccess, Guid.Empty, CancellationToken.None));
 
         [TestMethod]
         public async Task ClearAll_ShouldClearAllPermissionCaches()
@@ -371,9 +371,9 @@ namespace Equinor.ProCoSys.Auth.Tests.Caches
                 _currentUserProviderMock,
                 _permissionApiServiceMock,
                 Substitute.For<IOptionsMonitor<CacheOptions>>());
-            
+
             // Act
-            await dut.ClearAllAsync(Plant1IdWithAccess, _currentUserOid, CancellationToken.None);
+            await dut.ClearAllAsync(_plant1IdWithAccess, _currentUserOid, CancellationToken.None);
 
             // Assert
             await cacheManagerMock.Received(5).RemoveAsync(Arg.Any<string>(), CancellationToken.None);
@@ -382,29 +382,29 @@ namespace Equinor.ProCoSys.Auth.Tests.Caches
         private void AssertPlants(IList<string> result)
         {
             Assert.AreEqual(2, result.Count);
-            Assert.AreEqual(Plant1IdWithAccess, result.First());
-            Assert.AreEqual(Plant2IdWithAccess, result.Last());
+            Assert.AreEqual(_plant1IdWithAccess, result.First());
+            Assert.AreEqual(_plant2IdWithAccess, result.Last());
         }
 
         private void AssertPermissions(IList<string> result)
         {
             Assert.AreEqual(2, result.Count);
-            Assert.AreEqual(Permission1, result.First());
-            Assert.AreEqual(Permission2, result.Last());
+            Assert.AreEqual(_permission1, result.First());
+            Assert.AreEqual(_permission2, result.Last());
         }
 
         private void AssertProjects(IList<string> result)
         {
             Assert.AreEqual(2, result.Count);
-            Assert.AreEqual(Project1WithAccess, result.First());
-            Assert.AreEqual(Project2WithAccess, result.Last());
+            Assert.AreEqual(_project1WithAccess, result.First());
+            Assert.AreEqual(_project2WithAccess, result.Last());
         }
 
         private void AssertRestrictions(IList<string> result)
         {
             Assert.AreEqual(2, result.Count);
-            Assert.AreEqual(Restriction1, result.First());
-            Assert.AreEqual(Restriction2, result.Last());
+            Assert.AreEqual(_restriction1, result.First());
+            Assert.AreEqual(_restriction2, result.Last());
         }
     }
 }

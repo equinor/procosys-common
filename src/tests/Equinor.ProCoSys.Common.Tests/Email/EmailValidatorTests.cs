@@ -32,6 +32,6 @@ namespace Equinor.ProCoSys.Common.Tests.Email
             Assert.IsFalse(EmailValidator.IsValid("test@.equinor.com"));
             Assert.IsFalse(EmailValidator.IsValid("test@gmail@equinor.com"));
             Assert.IsFalse(EmailValidator.IsValid("is this a valid email@equinor.com"));
-        } 
+        }
     }
 }

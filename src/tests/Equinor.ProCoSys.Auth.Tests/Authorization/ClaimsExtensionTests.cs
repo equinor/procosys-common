@@ -13,8 +13,8 @@ namespace Equinor.ProCoSys.Auth.Tests.Authorization
         {
             // Arrange
             var oid = "50e2322b-1990-42f4-86ac-179c7c075574";
-            var claims = new List<Claim> {new Claim(ClaimsExtensions.Oid, oid)};
-            
+            var claims = new List<Claim> { new Claim(ClaimsExtensions.Oid, oid) };
+
             // Act
             var guid = claims.TryGetOid();
 
@@ -28,8 +28,8 @@ namespace Equinor.ProCoSys.Auth.Tests.Authorization
         {
             // Arrange
             var oid = "50e2322b-1990-42f4-86ac-179c7c075574";
-            var claims = new List<Claim> {new Claim(ClaimTypes.UserData, oid)};
-            
+            var claims = new List<Claim> { new Claim(ClaimTypes.UserData, oid) };
+
             // Act
             var guid = claims.TryGetOid();
 
@@ -91,7 +91,7 @@ namespace Equinor.ProCoSys.Auth.Tests.Authorization
         public void TryGetGivenName_ShouldReturnNull_WhenGivenNameDoesNotExist()
         {
             // ReSharper disable once CollectionNeverUpdated.Local
-            var claims = new List<Claim>( );
+            var claims = new List<Claim>();
 
             var givenName = claims.TryGetGivenName();
 

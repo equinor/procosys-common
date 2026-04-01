@@ -14,7 +14,7 @@ namespace Equinor.ProCoSys.Common.Email;
 public class EmailService(IOptionsMonitor<EmailOptions> emailOptions, TokenCredential emailTokenCredential, ILogger<EmailService> logger) : IEmailService
 {
     private readonly string _mailUserOid = emailOptions.CurrentValue.MailUserOid;
-    
+
     public async Task SendEmailsAsync(List<string> emails, string subject, string body, CancellationToken cancellationToken = default)
     {
         EmailValidator.ValidateEmails(emails);
@@ -37,7 +37,7 @@ public class EmailService(IOptionsMonitor<EmailOptions> emailOptions, TokenCrede
                    .PostAsync(new Microsoft.Graph.Users.Item.SendMail.SendMailPostRequestBody
                    {
                        Message = graphMessage,
-                       SaveToSentItems = false                           
+                       SaveToSentItems = false
                    }, null, cancellationToken);
         }
         catch (Exception ex)
@@ -71,9 +71,10 @@ public class EmailService(IOptionsMonitor<EmailOptions> emailOptions, TokenCrede
 
         await graphServiceClient.Users[_mailUserOid]
             .SendMail
-            .PostAsync(new Microsoft.Graph.Users.Item.SendMail.SendMailPostRequestBody() {
-                Message = graphMessage, 
-                SaveToSentItems = false 
+            .PostAsync(new Microsoft.Graph.Users.Item.SendMail.SendMailPostRequestBody()
+            {
+                Message = graphMessage,
+                SaveToSentItems = false
             }, null, cancellationToken);
     }
 }
