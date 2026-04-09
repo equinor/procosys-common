@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<VersionPrefix>3.0.1</VersionPrefix> <!-- When incrementing this version, the Auth package version should also
+		<VersionPrefix>3.0.2</VersionPrefix> <!-- When incrementing this version, the Auth package version should also
 		                                          be incremented.
 		                                          Auth has a referance to this project, and the previously built 
 		                                          auth package will continue to referance the old version of this
