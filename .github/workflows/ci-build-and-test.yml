@@ -14,9 +14,9 @@ jobs:
       fail-fast: false
       matrix:
         test-project:
-          - src/tests/Equinor.ProCoSys.Auth.Tests/Equinor.ProCoSys.Auth.Tests.csproj
-          - src/tests/Equinor.ProCoSys.BlobStorage.Tests/Equinor.ProCoSys.BlobStorage.Tests.csproj
-          - src/tests/Equinor.ProCoSys.Common.Tests/Equinor.ProCoSys.Common.Tests.csproj
+          - Auth.Tests
+          - BlobStorage.Tests
+          - Common.Tests
     steps:
       - uses: actions/checkout@v5
 
@@ -24,7 +24,7 @@ jobs:
         run: dotnet restore src/Equinor.ProCoSys.Common.sln
 
       - name: Run tests - ${{ matrix.test-project }}
-        run: dotnet test ${{ matrix.test-project }} --configuration Release --no-restore
+        run: dotnet test src/tests/Equinor.ProCoSys.${{ matrix.test-project }} --configuration Release --no-restore
 
   all-tests-pass:
     name: All Tests Pass
