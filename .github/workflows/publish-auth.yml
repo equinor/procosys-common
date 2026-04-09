@@ -1,6 +1,7 @@
 name: 📦 Publish Auth
 
 on:
+  pull_request: # TODO: Remove this trigger after initial testing
   push:
     branches: [main]
     paths:
