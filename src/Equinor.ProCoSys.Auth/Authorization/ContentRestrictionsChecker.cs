@@ -25,7 +25,7 @@ namespace Equinor.ProCoSys.Auth.Authorization
             {
                 return false;
             }
-            
+
             var claimWithRestrictionRole = GetRestrictionRoleClaims(_claimsPrincipalProvider.GetCurrentClaimsPrincipal().Claims);
             return HasRestrictionRoleClaim(claimWithRestrictionRole, responsibleCode);
         }

@@ -1,17 +1,17 @@
-﻿using Equinor.ProCoSys.Auth.Authentication;
-using Equinor.ProCoSys.Auth.Caches;
-using Equinor.ProCoSys.Auth.Person;
-using Equinor.ProCoSys.Common.Misc;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.Extensions.Logging;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
+using Equinor.ProCoSys.Auth.Authentication;
+using Equinor.ProCoSys.Auth.Caches;
 using Equinor.ProCoSys.Auth.Permission;
+using Equinor.ProCoSys.Auth.Person;
+using Equinor.ProCoSys.Common.Misc;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace Equinor.ProCoSys.Auth.Authorization
@@ -80,7 +80,7 @@ namespace Equinor.ProCoSys.Auth.Authorization
                 _logger.LogInformation("----- {Name} early exit, {UserOid} don\'t exists in ProCoSys, Elapsed ({Elapsed}ms)", GetType().Name, userOid, sw.ElapsedMilliseconds);
                 return principal;
             }
-            
+
             if (proCoSysPerson.Super)
             {
                 AddSuperRoleToIdentity(claimsIdentity);
@@ -93,15 +93,15 @@ namespace Equinor.ProCoSys.Auth.Authorization
                 _logger.LogInformation("----- {Name} early exit, not a plant request, Elapsed ({Elapsed}ms)", GetType().Name, sw.ElapsedMilliseconds);
                 return principal;
             }
-            
+
             var userPlantPermissionData = await _permissionCache.GetUserPlantPermissionDataAsync(userOid.Value, plantId, CancellationToken.None);
-            
+
             if (!userPlantPermissionData.HasAccessToPlant(plantId))
             {
                 _logger.LogInformation("----- {Name} early exit, not a valid plant for user, Elapsed ({Elapsed}ms)", GetType().Name, sw.ElapsedMilliseconds);
                 return principal;
             }
-            
+
             AddRoleForAllPermissionsToIdentity(claimsIdentity, userPlantPermissionData.Permissions);
             if (!_authenticatorOptions.CurrentValue.DisableProjectUserDataClaims)
             {
@@ -167,7 +167,7 @@ namespace Equinor.ProCoSys.Auth.Authorization
             claimsIdentity.AddClaim(CreateClaim(ClaimTypes.Role, Superuser));
         }
 
-		private static void AddRoleForAllPermissionsToIdentity(ClaimsIdentity claimsIdentity, IReadOnlyCollection<string> permissions)
+        private static void AddRoleForAllPermissionsToIdentity(ClaimsIdentity claimsIdentity, IReadOnlyCollection<string> permissions)
         {
             foreach (var permission in permissions)
             {

@@ -30,7 +30,7 @@ namespace Equinor.ProCoSys.Auth.Tests.Authorization
             principal.AddIdentity(_claimsIdentity);
             var claimsPrincipalProviderMock = Substitute.For<IClaimsPrincipalProvider>();
             claimsPrincipalProviderMock.GetCurrentClaimsPrincipal().Returns(principal);
-            
+
             _dut = new RestrictionRolesChecker(claimsPrincipalProviderMock);
         }
 

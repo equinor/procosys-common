@@ -65,7 +65,7 @@ namespace Equinor.ProCoSys.Auth.Tests.Permission
             await _mainApiClientForUserMock.Received(1)
                 .QueryAndDeserializeAsync<List<string>>(url, CancellationToken.None);
         }
- 
+
         [TestMethod]
         public async Task GetAllOpenProjectsAsync_ShouldUseClientForUser()
         {

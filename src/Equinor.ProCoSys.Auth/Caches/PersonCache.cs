@@ -19,7 +19,7 @@ namespace Equinor.ProCoSys.Auth.Caches
         private readonly IOptionsMonitor<CacheOptions> _options;
 
         public PersonCache(
-            ICacheManager cacheManager, 
+            ICacheManager cacheManager,
             IPersonApiService personApiService,
             IOptionsMonitor<CacheOptions> options)
         {
@@ -33,7 +33,7 @@ namespace Equinor.ProCoSys.Auth.Caches
                 PersonsCacheKey(userOid),
                 token => _personApiService.TryGetPersonByOidAsync(userOid, includeVoidedPerson, token),
                 CacheDuration.Minutes,
-                _options.CurrentValue.PersonCacheMinutes, 
+                _options.CurrentValue.PersonCacheMinutes,
                 cancellationToken);
 
         public async Task<List<ProCoSysPerson>> GetAllPersonsAsync(string plant, CancellationToken cancellationToken)

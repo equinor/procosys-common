@@ -20,9 +20,9 @@ public sealed class DistributedCacheManager(
         => distributedCache.RemoveAsync(key, cancellationToken);
 
     public async Task<T> GetOrCreateAsync<T>(
-        string key, 
-        Func<CancellationToken, Task<T>> fetch, 
-        CacheDuration duration, 
+        string key,
+        Func<CancellationToken, Task<T>> fetch,
+        CacheDuration duration,
         long expiration,
         CancellationToken cancellationToken)
     {

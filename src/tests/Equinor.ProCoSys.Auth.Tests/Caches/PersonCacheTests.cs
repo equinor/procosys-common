@@ -1,4 +1,9 @@
-﻿using Equinor.ProCoSys.Auth.Caches;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Equinor.ProCoSys.Auth.Caches;
 using Equinor.ProCoSys.Auth.Person;
 using Equinor.ProCoSys.Common.Caches;
 using Microsoft.Extensions.Caching.Distributed;
@@ -7,11 +12,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Equinor.ProCoSys.Auth.Tests.Caches
 {
@@ -44,7 +44,7 @@ namespace Equinor.ProCoSys.Auth.Tests.Caches
         public void Setup()
         {
             _personApiServiceMock = Substitute.For<IPersonApiService>();
-            _person = new ProCoSysPerson { FirstName = "Erling", LastName = "Braut Haaland"};
+            _person = new ProCoSysPerson { FirstName = "Erling", LastName = "Braut Haaland" };
             _personApiServiceMock.TryGetPersonByOidAsync(_currentUserOid, true, CancellationToken.None).Returns(_person);
 
             _personApiServiceMock.GetAllPersonsAsync(TestPlant, CancellationToken.None).Returns([
@@ -105,7 +105,7 @@ namespace Equinor.ProCoSys.Auth.Tests.Caches
             await _dut.GetAllPersonsAsync(TestPlant, CancellationToken.None);
 
             // Act
-            List<ProCoSysPerson> result = await _dut.GetAllPersonsAsync(TestPlant, CancellationToken.None);
+            var result = await _dut.GetAllPersonsAsync(TestPlant, CancellationToken.None);
 
             // Assert
             AssertAllPersons(result);

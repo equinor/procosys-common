@@ -66,7 +66,7 @@ namespace Equinor.ProCoSys.Auth.Permission
 
             return await mainApiClientForUser.QueryAndDeserializeAsync<List<string>>(url, cancellationToken) ?? [];
         }
-        
+
         private async Task TracePlantAsync(string plant, CancellationToken cancellationToken)
         {
             var url = $"{_baseAddress}Me/TracePlant" +

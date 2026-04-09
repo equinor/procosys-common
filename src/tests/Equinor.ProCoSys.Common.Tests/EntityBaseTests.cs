@@ -7,7 +7,7 @@ namespace Equinor.ProCoSys.Common.Tests
     [TestClass]
     public class EntityBaseTests
     {
-        private readonly byte[] ConvertedRowVersion = {0, 0, 0, 0, 0, 0, 0, 16};
+        private readonly byte[] _convertedRowVersion = { 0, 0, 0, 0, 0, 0, 0, 16 };
         private TestableEntityBase _dut;
         private IDomainEvent _domainEvent;
         private IPostSaveDomainEvent _postSaveEventMock;
@@ -57,7 +57,7 @@ namespace Equinor.ProCoSys.Common.Tests
         {
             // Arrange
             _dut.AddDomainEvent(_domainEvent);
-            
+
             // Act
             _dut.RemoveDomainEvent(_domainEvent);
 
@@ -71,7 +71,7 @@ namespace Equinor.ProCoSys.Common.Tests
         {
             // Arrange
             _dut.AddPostSaveDomainEvent(_postSaveEventMock);
-            
+
             // Act
             _dut.RemovePostSaveDomainEvent(_postSaveEventMock);
 
@@ -88,7 +88,7 @@ namespace Equinor.ProCoSys.Common.Tests
             _dut.AddDomainEvent(domainMock1);
             var postSaveEventMock1 = Substitute.For<IPostSaveDomainEvent>();
             _dut.AddPostSaveDomainEvent(postSaveEventMock1);
-            
+
             var domainMock2 = new TestableDomainEvent();
             _dut.AddDomainEvent(domainMock2);
             var postSaveEventMock2 = Substitute.For<IPostSaveDomainEvent>();
@@ -129,9 +129,9 @@ namespace Equinor.ProCoSys.Common.Tests
         {
             Assert.IsNotNull(_dut.RowVersion);
             _dut.SetRowVersion(RowVersion);
-            Assert.IsTrue(_dut.RowVersion.SequenceEqual(ConvertedRowVersion));
+            Assert.IsTrue(_dut.RowVersion.SequenceEqual(_convertedRowVersion));
         }
-       
+
         private class TestableEntityBase : EntityBase
         {
             // The base class is abstract, therefor a sub class is needed to test it.
