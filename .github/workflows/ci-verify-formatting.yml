@@ -14,19 +14,19 @@ jobs:
       fail-fast: false
       matrix:
         project:
-          - src/Equinor.ProCoSys.Auth
-          - src/Equinor.ProCoSys.BlobStorage
-          - src/Equinor.ProCoSys.Common
-          - src/tests/Equinor.ProCoSys.Auth.Tests
-          - src/tests/Equinor.ProCoSys.BlobStorage.Tests
-          - src/tests/Equinor.ProCoSys.Common.Tests
+          - Equinor.ProCoSys.Auth
+          - Equinor.ProCoSys.BlobStorage
+          - Equinor.ProCoSys.Common
+          - tests/Equinor.ProCoSys.Auth.Tests
+          - tests/Equinor.ProCoSys.BlobStorage.Tests
+          - tests/Equinor.ProCoSys.Common.Tests
     steps:
       - uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
       - name: Verify ${{ matrix.project }} formatting
-        run: dotnet format ./${{ matrix.project }} --verify-no-changes
+        run: dotnet format ./src/${{ matrix.project }} --verify-no-changes
 
   all-formatting-pass:
     name: All Formatting Pass
