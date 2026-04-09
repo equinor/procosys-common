@@ -1,0 +1,42 @@
+name: ✏️ Verify formatting
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  format-check:
+    name: Verify formatting
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        project:
+          - Equinor.ProCoSys.Auth
+          - Equinor.ProCoSys.BlobStorage
+          - Equinor.ProCoSys.Common
+          - tests/Equinor.ProCoSys.Auth.Tests
+          - tests/Equinor.ProCoSys.BlobStorage.Tests
+          - tests/Equinor.ProCoSys.Common.Tests
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Verify ${{ matrix.project }} formatting
+        run: dotnet format ./src/${{ matrix.project }} --verify-no-changes
+
+  all-formatting-pass:
+    name: All Formatting Pass
+    runs-on: ubuntu-latest
+    needs: [format-check]
+    if: always()
+    steps:
+      - name: Check formatting results
+        run: |
+          if [ "${{ needs.format-check.result }}" != "success" ]; then
+            echo "One or more formatting checks failed"
+            exit 1
+          fi

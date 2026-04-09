@@ -1,0 +1,40 @@
+name: 🤖 Build & run tests
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        test-project:
+          - Auth.Tests
+          - BlobStorage.Tests
+          - Common.Tests
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Restore dependencies
+        run: dotnet restore src/Equinor.ProCoSys.Common.sln
+
+      - name: Run tests - ${{ matrix.test-project }}
+        run: dotnet test src/tests/Equinor.ProCoSys.${{ matrix.test-project }} --configuration Release --no-restore
+
+  all-tests-pass:
+    name: All Tests Pass
+    runs-on: ubuntu-latest
+    needs: [test]
+    if: always()
+    steps:
+      - name: Check test results
+        run: |
+          if [ "${{ needs.test.result }}" != "success" ]; then
+            echo "One or more test jobs failed"
+            exit 1
+          fi
