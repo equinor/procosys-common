@@ -1,0 +1,24 @@
+name: 📦 Publish Common
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - src/Equinor.ProCoSys.Common/**
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  publish:
+    name: Pack & publish Common
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Pack
+        run: dotnet pack src/Equinor.ProCoSys.Common/Equinor.ProCoSys.Common.csproj --configuration Release --output ./nupkg
+
+      - name: Push to GitHub Packages
+        run: dotnet nuget push ./nupkg/*.nupkg --source https://nuget.pkg.github.com/equinor/index.json --api-key ${{ secrets.GITHUB_TOKEN }}
